@@ -4,7 +4,7 @@ const parts : number = 3
 const scGap : number = 0.02 / parts 
 const strokeFactor : number = 90 
 const sizeFactor : number = 4.9
-const circleRFactor : number = 15.9
+const circleRFactor : number = 23.9
 const delay : number = 20 
 const colors : Array<string> = [
     "#f44336",
@@ -51,6 +51,7 @@ class DrawingUtil {
         const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
         const sf2 : number = ScaleUtil.divideScale(sf, 1, parts)
         const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        console.log(sf1, sf2, sf3)
         const lineSize : number = Math.min(w, h) / sizeFactor 
         const r : number = Math.min(w, h) / circleRFactor 
         const gap : number = 2.5 * r 
@@ -60,7 +61,7 @@ class DrawingUtil {
             context.save()
             context.translate(gap * j, 0)
             DrawingUtil.drawLine(context, 0, 0, 0, -lineSize * sf1)
-            DrawingUtil.drawCircle(context, 0, -lineSize + (lineSize + r) * sf3, r * sf2)
+            DrawingUtil.drawCircle(context, 0, -lineSize + (lineSize - r) * sf3, r * sf2)
             context.restore()
         }
         context.restore() 
@@ -225,12 +226,13 @@ class Renderer {
     animator : Animator = new Animator()
 
     render(context : CanvasRenderingContext2D) {
-
+        this.btl.draw(context)
     }
 
     handleTap(cb : Function) {
         this.btl.startUpdating(() => {
             this.animator.start(() => {
+                cb()
                 this.btl.update(() => {
                     this.animator.stop()
                     cb()
