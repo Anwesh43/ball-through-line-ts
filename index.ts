@@ -214,3 +214,24 @@ class BallThroughLine {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    btl : BallThroughLine = new BallThroughLine()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+
+    }
+
+    handleTap(cb : Function) {
+        this.btl.startUpdating(() => {
+            this.animator.start(() => {
+                this.btl.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
